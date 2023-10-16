@@ -1,23 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+
+function ColorPicker({ colors }) {
+  const [selectedColor, setSelectedColor] = useState("");
+  const [showColors, setShowColors] = useState(false);
+  const [showColorButtons, setShowColorButtons] = useState(true); // Initially, show the color buttons
+  const [boxStyle, setBoxStyle] = useState({});
+
+  const handleButtonClick = () => {
+    setShowColors(!showColors);
+  };
+
+  const handleColorClick = (color) => {
+    setSelectedColor(color);
+    setBoxStyle({
+      background: color
+    });
+    setShowColorButtons(false);
+  };
+
+  return (
+    <>
+      <h2 className="text-center my-3 font-weight-bold">Color Picker</h2>
+      <div className="container">
+        <div className="ColorPicker">
+          <button className="pick-the-color" onClick={handleButtonClick}>
+            Pick a color
+          </button>
+          {showColors && (
+            <div className="box container-fluid" style={boxStyle}>
+              <div className="color-buttons">
+                {showColorButtons &&
+                  colors.map((color, index) => (
+                    <div
+                      key={index}
+                      className={`color-button ${
+                        color === selectedColor ? "selected" : ""
+                      }`}
+                      style={{ backgroundColor: color }}
+                      onClick={() => handleColorClick(color)}
+                    ></div>
+                  ))}
+              </div>
+              {selectedColor && (
+                <div
+                  className="selected-color"
+                  style={{ backgroundColor: selectedColor }}
+                ></div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
 
 function App() {
+  const colors = [
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "purple",
+    "orange",
+    "pink",
+    "cyan",
+    "brown",
+    "gray",
+    "magenta",
+    "teal",
+    "lime",
+    "indigo",
+    "violet",
+    "lightcoral",
+    "turquoise",
+    "wheat",
+    "gold"
+  ];
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ColorPicker colors={colors} />
     </div>
   );
 }
